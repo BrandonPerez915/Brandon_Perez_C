@@ -5,6 +5,7 @@ int main() {
   float f_estatura;
   char c_nombre[50], c_estado_civil;
 
+  //v1.0 bienvenida
   printf("Hola, soy AlanBot?\n");
   printf("Ingrese su nombre:\n");
   scanf("%s", c_nombre);

@@ -5,6 +5,7 @@ int main() {
   float f_balance_cuenta, f_ingresos_mensuales, f_gastos_mensuales, f_meta_ahorro;
   int i_bono_anual;
 
+  //v1.1 contador
   printf("Hola, soy AlanBot\n");
   printf("Ingrese su balance de cuenta:\n");
   scanf("%f", &f_balance_cuenta);
@@ -27,5 +28,5 @@ int main() {
   f_balance_cuenta + (f_ingresos_mensuales - f_gastos_mensuales) * 12 + (f_ingresos_mensuales - f_gastos_mensuales) * 12 * (i_bono_anual / 100));
 
   printf("Si desea alcanzar su meta de ahorro deberá trabajar %f meses \n",
-  ceil((f_meta_ahorro - f_balance_cuenta) / (f_ingresos_mensuales - f_gastos_mensuales)) );
-  }
+  ceil((f_meta_ahorro - f_balance_cuenta) / (f_ingresos_mensuales - f_gastos_mensuales)));
+}
