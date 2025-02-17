@@ -1,3 +1,4 @@
+// v1.3 operador de bits
 // Solicitar al usuario un número entero positivo y realizar operaciones
 // con bits para contestar:
 // a) ¿El número es par? 
