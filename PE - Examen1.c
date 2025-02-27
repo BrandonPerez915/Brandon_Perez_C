@@ -59,9 +59,21 @@ Define y codifica la funcion ejercicio02 para que reciba 3 numeros enteros
 y devuelva cuál de los 3 numeros es el mas pequeño */
 
 // INICIO DE RESPUESTA:
-void ejercicio2()
+int ejercicio2(int num1, int num2, int num3)
 {
-  
+  int menor;
+
+  if (num1 < num2 && num1 < num3) {
+    menor = num1;
+  }
+  else if (num2 < num1 && num2 < num3) {
+    menor = num2;
+  }
+  else {
+    menor = num3;
+  }
+
+  return menor;
 }
   // FIN DE RESPUESTA
 
@@ -118,7 +130,7 @@ int main()
   printf("\n");
 
   printf("\t\t == Ejercicio 2: == \n");
-  //printf("El numero más pequeño es: %d",ejercicio02(1000,5123,1235));   //prueba con otros numeros, verifica ;) 
+  printf("El numero más pequeño es: %d",ejercicio2(10,-4,19));   //prueba con otros numeros, verifica ;) 
   printf("\n");
 
   printf("\t\t == Ejercicio 3: == \n");
