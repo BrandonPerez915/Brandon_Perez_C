@@ -83,9 +83,9 @@ int ejercicio2(int num1, int num2, int num3)
   */
   void ejercicio3()
   {
-    int estudie = 1;
-    int hice_tarea = 1;
-    int me_ira_bien = 0;
+    int estudie = 0;
+    int hice_tarea = 0;
+    int me_ira_bien;
     int tengo_suerte = 0;
   
     //Convierte los siguientes condicionales en operadores ternarios 
@@ -102,14 +102,18 @@ int ejercicio2(int num1, int num2, int num3)
     */
 
   // INICIO DE RESPUESTA
-
+    me_ira_bien = (estudie || hice_tarea == 1) ? 1 : tengo_suerte ? 1 : 0;
   // FIN DE RESPUESTA
 
     //Convierte el siguiente operador ternario a un condicional simple (ifs) o switch
     //printf("Me fue %s\n", me_ira_bien ? "BIEN! :)" : "MAL :(\n");
 
   // INICIO DE RESPUESTA
-
+    if (me_ira_bien) {
+      printf("Me fue BIEN! :)\n");
+    } else {
+      printf("Me fue MAL :(\n");
+    }
   // FIN DE RESPUESTA
  }
 
@@ -134,7 +138,7 @@ int main()
   printf("\n");
 
   printf("\t\t == Ejercicio 3: == \n");
-  //ejercicio3();
+  ejercicio3();
   printf("\n");
 
 }
