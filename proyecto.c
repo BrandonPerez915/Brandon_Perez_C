@@ -1,46 +1,114 @@
 #include <stdio.h>
+#include <math.h>
+#include <stdint.h>
 #include <string.h>
-#include <stdlib.h>
 
-int main() {
-    char s_datos_vehiculo[50];
-    char *c_iterador;
-
-    printf("Ingrese los datos del vehiculo (placas, modelo, etc.): \n");
+void encode(char *encoded, const char *placas, char color, uint8_t velocidad_actual, uint8_t velocidad_permitida, char verificacion) {
+    encoded[0] = '\0';  // Inicializar la cadena
     
-    // fgets toma 3 parámetros:
-    // 1.- La variable donde se guarda
-    // 2.- La cantidad espacio de los datos a recuperar
-    // 3.- Tipo de entrada de datos; stdin = standard input
-    fgets(s_datos_vehiculo, sizeof(s_datos_vehiculo), stdin);
+    // La función strcat concatena dos cadenas de texto
+    strcat(encoded, placas);
 
-    // Eliminar el salto de línea, si está presente
-    s_datos_vehiculo[strcspn(s_datos_vehiculo, "\n")] = '\0';
+    // Buffer para convertir los valores a una cadena y poder concatenarlos
+    char buffer[4];
 
-    // Separamos usando el espacio como delimitador
-    c_iterador = strtok(s_datos_vehiculo, " ");
+    // La función sprintf formatea y almacena una cadena en un buffer 
+    sprintf(buffer, "%c", color);
+    strcat(encoded, buffer);
 
-    // Aseguramos que todas las variables tengan espacio suficiente
-    char s_placas[7], c_color[2], c_velocidades[13], c_verificacion_vehicular[2]; 
-    int i_longitud_cadena = strlen(c_velocidades);
+    sprintf(buffer, "%d", velocidad_actual);
+    strcat(encoded, buffer);
+
+    sprintf(buffer, "%c", verificacion);
+    strcat(encoded, buffer);
+
+    sprintf(buffer, "%d", velocidad_permitida);
+    strcat(encoded, buffer);
+}
+
+void central(char *encoded) {
+    char placas_obtenidas[7], color_vehiculo[10], color_obtenido, verificacion_obtenida;
+    short unsigned int precio_por_km;
+    uint8_t velocidad_permitida_obtenida, velocidad_actual_obtenida;
+    float multa, multa_extra = 0;
+
+    // sscanf se utiliza para leer datos de una cadena.
+    sscanf(encoded, "%6s%c%hhu%c%hhu", placas_obtenidas, &color_obtenido, &velocidad_actual_obtenida, &verificacion_obtenida, &velocidad_permitida_obtenida);
     
-    strcpy(s_placas, c_iterador);
-    c_iterador = strtok(NULL, " ");
-    strcpy(c_color, c_iterador);
-    c_iterador = strtok(NULL, " "); 
-    strcpy(c_velocidades, c_iterador);
+    // Calcular el precio por km en relación a la velocidad excedida
+    precio_por_km = 50 + 50 * (floor((velocidad_actual_obtenida - velocidad_permitida_obtenida - 1) / 20));
 
-    // Si se quiere eliminar el primer y último carácter de c_velocidades:
-    if (i_longitud_cadena > 2) {
-        memmove(c_velocidades, c_velocidades + 1, i_longitud_cadena - 2);
-        c_velocidades[i_longitud_cadena - 2] = '\0';
+    // Convertir el color del vehículo a una cadena
+    switch(color_obtenido) {
+        case 'R':
+            strcpy(color_vehiculo, "Rojo");
+            break;
+        case 'A':
+            strcpy(color_vehiculo, "Azul");
+            break;
+        case 'B':
+            strcpy(color_vehiculo, "Blanco");
+            break;
+        case 'N':
+            strcpy(color_vehiculo, "Negro");
+            break;
     }
 
-    c_iterador = strtok(NULL, " ");
-    strcpy(c_verificacion_vehicular, c_iterador);
+    if(velocidad_actual_obtenida > velocidad_permitida_obtenida) {
+        multa = precio_por_km * (velocidad_actual_obtenida - velocidad_permitida_obtenida);
+        if(verificacion_obtenida == 'N') {
+            multa_extra = multa * 0.5;
+        }
+    }
+    else {
+        if(verificacion_obtenida == 'N') {
+            multa_extra = 1500.00;
+        }
+    }
 
-    printf("Placas: %s\nColor: %s\nVerificaion vehicular: %s\n", s_placas, c_color, c_velocidades, c_verificacion_vehicular);
+    // Generación de la multa con el formato específico
+    printf("\n\nInformación y placas del vehiculo:\n");
+    printf("\tAuto %s, %s \n\n", color_vehiculo, placas_obtenidas);
+    printf("Velocidad actual:                :      %u km / h\n", velocidad_actual_obtenida);
+    printf("Limite de velocidad en via:      :      %hhu km / h\n", velocidad_permitida_obtenida);
+    printf("Referendo                        :      %s\n\n", verificacion_obtenida == 'N' ? "Vencido":"Vigente");
+
+    if(velocidad_actual_obtenida <= velocidad_permitida_obtenida && multa_extra == 0) {
+        printf("No hay multa :) \n");
+    }
+    else {
+        int total = 0;
+        printf("Desgloce de multa:\n");
+        if (velocidad_actual_obtenida > velocidad_permitida_obtenida) {
+            printf("\t -    Exceso de velocidad (%d km x $%hu pesos)\n", velocidad_actual_obtenida - velocidad_permitida_obtenida, precio_por_km);
+            printf("\t\t\t\t\t\t\t      $   %.2f MXN\n", multa);
+            total += multa;
+        }
+        if (verificacion_obtenida == 'N') {
+            printf("\t -    Sin referendo, 1.5x");
+            printf("\t\t\t      $   +%.2f MXN\n", multa_extra);
+            total += multa_extra;
+        }
+        printf("------------------------------------------------------------------------\n");
+        printf("\t\t\t\t\t\t    Total     $   %.2f MXN\n", (float) total);
+    }
+}
+
+int main() {
+    uint8_t velocidad_permitida; // 1 byte
+    unsigned int velocidad_actual; // 4 bytes
+    char placas[7], color, verificacion; // 7 bytes, 1 byte, 1 byte
+
+    printf("Dame los datos de tu placa: ");
+    // %hhu para leer un entero sin signo de 1 byte
+    scanf("%6s %c [%d|%hhu] %c", placas, &color, &velocidad_actual, &velocidad_permitida, &verificacion);
+
+    velocidad_actual = (unsigned int) ceil(velocidad_actual / 1000.0);
+
+    // Variable donde se almacenan los datos codificados del vehículo
+    char encoded[15]; // 15 bytes 
+    encode(encoded, placas, color, (uint8_t) velocidad_actual, velocidad_permitida, verificacion);
+    central(encoded);
 
     return 0;
 }
-
