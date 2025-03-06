@@ -52,6 +52,8 @@ void central(char *encoded) {
         case 'N':
             strcpy(color_vehiculo, "Negro");
             break;
+        default:
+            strcpy(color_vehiculo, "sin color");
     }
 
     if(velocidad_actual_obtenida > velocidad_permitida_obtenida) {
@@ -89,7 +91,7 @@ void central(char *encoded) {
             printf("\t\t\t      $   +%.2f MXN\n", multa_extra);
             total += multa_extra;
         }
-        printf("------------------------------------------------------------------------\n");
+        printf("---------------------------------------------------------------------------------\n");
         printf("\t\t\t\t\t\t    Total     $   %.2f MXN\n", (float) total);
     }
 }

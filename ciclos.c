@@ -33,7 +33,29 @@ void numero_mayor_ingresado() {
   } while (num2 >= 0);
 }
 
+int potencia_con_multiplicaciones(int base, int exponente) {
+  int resultado = 1;
+  for (int i = 0; i < exponente; i++) {
+    resultado *= base;
+  }
+  return resultado;
+}
+
+
+int potencia_con_sumas(int base, int exponente) {
+  int resultado = 0;
+  for (int i = 0; i < exponente; i++) {
+    for(int j = 0; j < base; j++) {
+      resultado += base;
+    }
+  }
+  return resultado;
+}
+
 int main() {
-  serie_ulam(10);
+  // serie_ulam(10);
+  // numero_mayor_ingresado();
+  printf("%d\n", potencia_con_multiplicaciones(5,4));
+  printf("%d\n", potencia_con_sumas(5,4));
   return 0;
 }
