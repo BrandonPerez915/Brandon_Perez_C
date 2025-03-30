@@ -52,10 +52,36 @@ int potencia_con_sumas(int base, int exponente) {
   return resultado;
 }
 
+// Solicitar n números al usuario y sumar unicamente los positivos.
+int suma_positivos() {
+  int n;
+  int suma = 0;
+  printf("Ingrese la cantidad de números a sumar: ");
+  scanf("%d", &n);
+
+  for(int i = 0; i < n; i++) {
+    int num;
+    printf("Ingrese un número: ");
+    scanf("%d", &num);
+    if(num == 0) break;
+    if(num < 0) continue;
+    suma += num;
+  }
+
+  return suma;
+}
+
+// Calcular el monto que se obtendrá al finalizar un año por una inversión de
+// n años a una tasa de interés de 3%, 3.5%, 4%, 4.5%, 5%
+int inversion(int n) {
+  
+}
+
 int main() {
   // serie_ulam(10);
   // numero_mayor_ingresado();
-  printf("%d\n", potencia_con_multiplicaciones(5,4));
-  printf("%d\n", potencia_con_sumas(5,4));
+  // printf("%d\n", potencia_con_multiplicaciones(5,4));
+  // printf("%d\n", potencia_con_sumas(5,4));
+  printf("%d\n", suma_positivos());
   return 0;
 }
