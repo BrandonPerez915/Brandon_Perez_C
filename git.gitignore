@@ -1,8 +1,0 @@
-# Ignorar todos los archivos
-*.*
-
-# Excepto los archivos .c
-!*.c
-
-# Excepto los ejecutables
-!*.out

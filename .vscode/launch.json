@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/brandonperez/Desktop/C",
-      "program": "/Users/brandonperez/Desktop/C/build/Debug/outDebug"
+      "cwd": "/Users/brandonperez/Desktop/C/CodeWars",
+      "program": "/Users/brandonperez/Desktop/C/CodeWars/build/Debug/outDebug"
     }
   ]
 }
